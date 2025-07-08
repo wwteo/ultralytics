@@ -226,8 +226,8 @@ with open(csv_file_path, mode='w', newline='') as file:
         # Write the annotated frame to the temporary output video
         out.write(frame)
 
-        # Optionally display the frame
-        cv2.imshow("License Plate Detection and OCR", frame)
+        # # Optionally display the frame
+        # cv2.imshow("License Plate Detection and OCR", frame)
 
         # Exit loop if 'q' key is pressed
         if cv2.waitKey(1) & 0xFF == ord('q'):
