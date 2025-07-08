@@ -2,15 +2,41 @@ import cv2
 import csv
 from paddleocr import PaddleOCR
 from ultralytics import YOLO
+import logging
+import paddle
+# import torch
+# Setup logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# Verify PaddlePaddle installation
+try:
+    paddle.utils.run_check()
+    if not paddle.device.is_compiled_with_cuda():
+        logger.warning("PaddlePaddle not compiled with CUDA. Check installation and CUDA/cuDNN setup.")
+except Exception as e:
+    logger.error("PaddlePaddle installation check failed: %s", e)
+    exit(1)
+
+# # Verify GPU availability
+# logger.info("PyTorch GPU Available: %s", torch.cuda.is_available())
+# if torch.cuda.is_available():
+#     logger.info("PyTorch Device: %s", torch.cuda.get_device_name(0))
+if paddle.device.is_compiled_with_cuda():
+    logger.info("Paddle Device: %s", paddle.device.get_device())
+else:
+    logger.warning("PaddlePaddle GPU unavailable, using CPU. Check CUDA/cuDNN installation.")
+
+
 
 # Load the YOLO model
 model = YOLO(r".\best.pt")  # Replace with your YOLO weights file.
 
 # Initialize PaddleOCR
 ocr = PaddleOCR(lang='en',
-    use_doc_orientation_classify=False, # document orientation classification model via this parameter
-    use_doc_unwarping=True, # text image rectification model via this parameter
-    use_textline_orientation=True, # text line orientation classification model via this parameter
+    # use_doc_orientation_classify=False, # document orientation classification model via this parameter
+    # use_doc_unwarping=True, # text image rectification model via this parameter
+    # use_textline_orientation=True, # text line orientation classification model via this parameter
                 )
 
 # Input video path
